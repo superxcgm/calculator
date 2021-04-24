@@ -1,9 +1,15 @@
-#include "../include/placeholder.h"
+#include "../include/calculator.h"
 #include <iostream>
+#include <string>
 
 int main() {
-    int ans = add(1, 1);
+    std::string line;
 
-    std::cout << "1 + 1 = " << ans << std::endl;
+    while (true) {
+        getline(std::cin, line);
+        const std::string &result = Calculator::calculate(line);
+        std::cout << result;
+    }
+
     return 0;
 }
