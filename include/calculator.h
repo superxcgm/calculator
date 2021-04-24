@@ -6,7 +6,7 @@
 
 class Calculator {
 public:
-    static const std::string calculate(const std::string &expressionStr);
+    static const std::string Calculate(const std::string &expression_str);
 };
 
 
