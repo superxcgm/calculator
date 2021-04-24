@@ -34,12 +34,25 @@ static const std::string int2string(int x) {
     return ans;
 }
 
+static int operate(int op1, char c_operator, int op2) {
+    switch (c_operator) {
+        case '+':
+            return op1 + op2;
+        case '-':
+            return op1 - op2;
+        case '*':
+            return op1 * op2;
+        case '/':
+            return op1 / op2;
+    }
+}
+
 const std::string Calculator::Calculate(const std::string &expression_str) {
     auto op1_Optional = ReadOperand(expression_str, 0);
     auto [op1, pos] = *op1_Optional;
-//    char opeartor = readOperator(expressionStr, pos);
+    char c_opeartor = expression_str[pos];
     auto op2_Optional = ReadOperand(expression_str, pos + 1);
     int op2 = std::get<0>(*op2_Optional);
 
-    return int2string(op1 + op2);
+    return int2string(operate(op1, c_opeartor, op2));
 }

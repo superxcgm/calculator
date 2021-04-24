@@ -8,7 +8,7 @@ int main() {
     while (true) {
         getline(std::cin, line);
         const std::string &result = Calculator::Calculate(line);
-        std::cout << result;
+        std::cout << result << std::endl;
     }
 
     return 0;
