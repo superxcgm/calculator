@@ -9,5 +9,4 @@ public:
     static const std::string Calculate(const std::string &expression_str);
 };
 
-
 #endif //CALCULATOR_CALCULATOR_H

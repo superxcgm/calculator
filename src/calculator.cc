@@ -53,7 +53,7 @@ static const std::string Int2String(int x) {
     return ans;
 }
 
-static int operate(int op1, char c_operator, int op2) {
+static std::optional<int> operate(int op1, char c_operator, int op2) {
     switch (c_operator) {
         case '+':
             return op1 + op2;
@@ -62,6 +62,9 @@ static int operate(int op1, char c_operator, int op2) {
         case '*':
             return op1 * op2;
         case '/':
+            if (op2 == 0) {
+                return std::nullopt;
+            }
             return op1 / op2;
     }
 }
@@ -69,21 +72,25 @@ static int operate(int op1, char c_operator, int op2) {
 static const std::string PARSE_ERROR = "parse error";
 
 const std::string Calculator::Calculate(const std::string &expression_str) {
-    auto op1_optional = ReadOperand(expression_str, 0);
-    if (!op1_optional.has_value()) {
+    // Todo: 这里option的处理看起来很丑，看能不能优化
+    auto op1_opt = ReadOperand(expression_str, 0);
+    if (!op1_opt.has_value()) {
         return PARSE_ERROR;
     }
-    auto[op1, pos] = *op1_optional;
-    auto operator_optional = ReadOperator(expression_str, pos);
-    if (!op1_optional.has_value()) {
+    auto[op1, pos] = *op1_opt;
+    auto operator_opt = ReadOperator(expression_str, pos);
+    if (!operator_opt.has_value()) {
         return PARSE_ERROR;
     }
-    auto c_opeartor = std::get<0>(*operator_optional);
-    auto op2_Optional = ReadOperand(expression_str, std::get<1>(*operator_optional));
-    if (!op2_Optional.has_value()) {
+    auto c_opeartor = std::get<0>(*operator_opt);
+    auto op2_opt = ReadOperand(expression_str, std::get<1>(*operator_opt));
+    if (!op2_opt.has_value()) {
         return PARSE_ERROR;
     }
-    int op2 = std::get<0>(*op2_Optional);
-
-    return Int2String(operate(op1, c_opeartor, op2));
+    int op2 = std::get<0>(*op2_opt);
+    auto result_opt = operate(op1, c_opeartor, op2);
+    if (!result_opt.has_value()) {
+        return "Divide by zero";
+    }
+    return Int2String(*result_opt);
 }

@@ -2,6 +2,8 @@
 #include <gtest/gtest.h>
 #include "../include/calculator.h"
 
+const std::string PARSE_ERROR = "parse error";
+
 TEST(CalculatorTest, ShouldReturn2When1Plus1) {
     EXPECT_EQ("2", Calculator::Calculate("1+1"));
 }
@@ -22,20 +24,24 @@ TEST(CalculatorTest, ShouldReturn3When6Div2) {
     EXPECT_EQ("3", Calculator::Calculate("6/2"));
 }
 
+TEST(CalculatorTest, ShouldComplainWhenDiv0) {
+    EXPECT_EQ("Divide by zero", Calculator::Calculate("6/0"));
+}
+
 TEST(CalculatorTest, ShouldIgnoreExtraSpaces) {
     EXPECT_EQ("2", Calculator::Calculate(" 1 + 1 "));
 }
 
 TEST(CalculatorTest, ShouldComplainWhenOp1Invalid) {
-    EXPECT_EQ("parse error", Calculator::Calculate("*"));
+    EXPECT_EQ(PARSE_ERROR, Calculator::Calculate("*"));
 }
 
 TEST(CalculatorTest, ShouldComplainWhenOp2Invalid) {
-    EXPECT_EQ("parse error", Calculator::Calculate("1+*"));
+    EXPECT_EQ(PARSE_ERROR, Calculator::Calculate("1+*"));
 }
 
 TEST(CalculatorTest, ShouldComplainWhenOperatorInvalid) {
-    EXPECT_EQ("parse error", Calculator::Calculate("1$2"));
+    EXPECT_EQ(PARSE_ERROR, Calculator::Calculate("1$2"));
 }
 
 TEST(CalculatorTest, ShouldReturn2WhenMinus4Plus6) {
