@@ -5,6 +5,8 @@
 static std::optional<std::tuple<int, int>> ReadOperand(const std::string &buffer, int start_pos) {
     int pos = start_pos;
     int ans = 0;
+    while (pos != buffer.size() && buffer[pos] == ' ')
+        pos++;
     while (pos != buffer.size()) {
         char ch = buffer[pos];
         if (ch >= '0' && ch <= '9') {
@@ -17,7 +19,14 @@ static std::optional<std::tuple<int, int>> ReadOperand(const std::string &buffer
     return std::make_tuple(ans, pos);
 }
 
-static const std::string int2string(int x) {
+static std::optional<std::tuple<char, int>> ReadOperator(const std::string &buffer, int start_pos) {
+    int pos = start_pos;
+    while (pos != buffer.size() && buffer[pos] == ' ')
+        pos++;
+    return std::make_tuple(buffer[pos], pos + 1);
+}
+
+static const std::string Int2String(int x) {
     std::string ans = "";
     bool negative = false;
     if (x < 0) {
@@ -48,11 +57,11 @@ static int operate(int op1, char c_operator, int op2) {
 }
 
 const std::string Calculator::Calculate(const std::string &expression_str) {
-    auto op1_Optional = ReadOperand(expression_str, 0);
-    auto [op1, pos] = *op1_Optional;
-    char c_opeartor = expression_str[pos];
-    auto op2_Optional = ReadOperand(expression_str, pos + 1);
+    auto[op1, pos] = *ReadOperand(expression_str, 0);
+    auto operator_optional = ReadOperator(expression_str, pos);
+    char c_opeartor = std::get<0>(*operator_optional);
+    auto op2_Optional = ReadOperand(expression_str, std::get<1>(*operator_optional));
     int op2 = std::get<0>(*op2_Optional);
 
-    return int2string(operate(op1, c_opeartor, op2));
+    return Int2String(operate(op1, c_opeartor, op2));
 }

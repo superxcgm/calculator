@@ -21,3 +21,7 @@ TEST(CalculatorTest, ShouldReturn6When2Multiply3) {
 TEST(CalculatorTest, ShouldReturn3When6Div2) {
     EXPECT_EQ("3", Calculator::Calculate("6/2"));
 }
+
+TEST(CalculatorTest, ShouldIgnoreExtraSpaces) {
+    EXPECT_EQ("2", Calculator::Calculate(" 1 + 1 "));
+}
