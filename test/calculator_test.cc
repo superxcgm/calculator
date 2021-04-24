@@ -25,3 +25,15 @@ TEST(CalculatorTest, ShouldReturn3When6Div2) {
 TEST(CalculatorTest, ShouldIgnoreExtraSpaces) {
     EXPECT_EQ("2", Calculator::Calculate(" 1 + 1 "));
 }
+
+TEST(CalculatorTest, ShouldComplainWhenOp1Invalid) {
+    EXPECT_EQ("parse error", Calculator::Calculate("*"));
+}
+
+TEST(CalculatorTest, ShouldComplainWhenOp2Invalid) {
+    EXPECT_EQ("parse error", Calculator::Calculate("1+*"));
+}
+
+TEST(CalculatorTest, ShouldComplainWhenOperatorInvalid) {
+    EXPECT_EQ("parse error", Calculator::Calculate("1$2"));
+}
