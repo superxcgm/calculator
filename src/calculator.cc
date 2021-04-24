@@ -6,6 +6,7 @@ static std::optional<std::tuple<int, int>> ReadOperand(const std::string &buffer
     int pos = start_pos;
     int ans = 0;
     bool haveValue = false;
+    bool negative = false;
     while (pos != buffer.size() && buffer[pos] == ' ')
         pos++;
     while (pos != buffer.size()) {
@@ -13,14 +14,16 @@ static std::optional<std::tuple<int, int>> ReadOperand(const std::string &buffer
         if (ch >= '0' && ch <= '9') {
             haveValue = true;
             ans = ans * 10 + (ch - '0');
-            pos++;
+        } else if (ch == '-' && !haveValue) {
+            negative = true;
         } else if (haveValue) {
-            return std::make_tuple(ans, pos);
+            return std::make_tuple(negative ? ans * -1 : ans, pos);
         } else {
             return std::nullopt;
         }
+        pos++;
     }
-    return std::make_tuple(ans, pos);
+    return std::make_tuple(negative ? ans * -1 : ans, pos);
 }
 
 static std::optional<std::tuple<char, int>> ReadOperator(const std::string &buffer, int start_pos) {

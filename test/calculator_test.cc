@@ -37,3 +37,11 @@ TEST(CalculatorTest, ShouldComplainWhenOp2Invalid) {
 TEST(CalculatorTest, ShouldComplainWhenOperatorInvalid) {
     EXPECT_EQ("parse error", Calculator::Calculate("1$2"));
 }
+
+TEST(CalculatorTest, ShouldReturn2WhenMinus4Plus6) {
+    EXPECT_EQ("2", Calculator::Calculate("-4+6"));
+}
+
+TEST(CalculatorTest, ShouldReturn2When6PlusMinus4) {
+    EXPECT_EQ("2", Calculator::Calculate("6+-4"));
+}
